@@ -12,4 +12,12 @@ import java.util.List;
 @Service
 public class ConsumerService {
 
+    @KafkaListener(topics = "${topic.name.first-topic}")
+    public void receive(String message,
+                        @Header(KafkaHeaders.RECEIVED_PARTITION_ID) List<Integer> partitions,
+                        @Header(KafkaHeaders.RECEIVED_TOPIC) List<String> topics,
+                        @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
+        System.out.println("Consumer -- received from first topic -- " + message);
+
+    }
 }

@@ -1,6 +1,7 @@
 package edu.umn.kafka.controller;
 
 import edu.umn.kafka.service.ProducerService;
+import edu.umn.kafka.vo.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +20,14 @@ public class ProducerController {
 
     private static int count = 1;
 
-    @GetMapping(value = "/api/producer/v1.0", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/api/producer/v1.0", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Object> kafkaProducer() {
-        //service.send(count,"Hello World"+count);
+        String value = "Hello World"+count;
+        Message msg = new Message(count, value);
+        service.send(msg);
         count++;
-        return new ResponseEntity<>("Message" + count + "Posted", HttpStatus.OK);
+        return new ResponseEntity<>(value, HttpStatus.OK);
     }
 
 }
